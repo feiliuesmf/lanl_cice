@@ -1,0 +1,35 @@
+#! /bin/csh -f
+#===============================================================================
+#  This is a CICE batch job script for yellowstone
+#===============================================================================
+
+#BSUB -N myjob                 # job name
+#BSUB -o myjob.%J.out          # output file name in which %J is replaced by the job ID
+#BSUB -e myjob.%J.err          # error file name in which %J is replaced by the job ID
+#BSUB -q batch                 # queue
+#PBS -l procs=4
+#PBS -l walltime=00:30:00
+#PBS -A esmf
+#PBS -d .
+set  stamp   = `date -u '+%y%m%d%H%M%S'`
+setenv ICE_LOG_FILE ice.log.${stamp}
+
+echo $ICE_LOG_FILE
+
+module purge
+module load nco/4.0.8 mpt/2.06 intel/12-12.0.4.191 netcdf/4.1.3-intel ncep
+module use /contrib/modulefiles
+module use /home/Gerhard.Theurich/Modulefiles
+module load esmf/7.0.0bs01-netcdf4.1.3
+module list
+echo "ESMF makefile: $ESMFMKFILE"
+echo ''
+
+echo ""
+echo "Modules intel mpt loaded"
+echo "PATH: $PATH"
+echo "LD_LIBRARY_PATY: $LD_LIBRARY_PATH"
+echo ""
+
+cd /home/Fei.Liu/noscrub/lanl_cice
+/apps/mpt/2.06/bin/mpiexec_mpt -np 4 ./cice >&! $ICE_LOG_FILE
