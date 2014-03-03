@@ -3,11 +3,11 @@
 ### Change these to your own site and user directory! 
 ### You will need to create a Makefile Macro in bld/ and a run_ice script 
 ### in input_templates/.
-setenv SITE LANL.conejo   # also works for mustang
+setenv SITE NOAA.zeus   # also works for mustang
 #setenv SITE LANL.bigsuze
 
 ### SYSTEM_USERDIR is predefined on ORNL machines
-setenv SYSTEM_USERDIR /scratch/eclare/CICE.v5.0  # conejo
+setenv SYSTEM_USERDIR /home/Fei.Liu/github/lanl_cice  # conejo
 #setenv SYSTEM_USERDIR /Users/akt/Work/MPAS-CICE/Column_Package/cice_package/run_dirs
 
 ### Grid resolution
@@ -75,10 +75,10 @@ setenv NUMIN 11           # minimum file unit number
 setenv NUMAX 99           # maximum file unit number
 
 ### Set SRCDIR and EXEDIR to your own paths!
-setenv SRCDIR /usr/projects/climate/eclare/CICE.v5.0/cice  # conejo
+setenv SRCDIR /home/Fei.Liu/github/lanl_cice  # conejo
 #setenv SRCDIR /Users/akt/Work/MPAS-CICE/Column_Package/cice_package/cice
 
-setenv EXEDIR $SYSTEM_USERDIR/rundir
+setenv EXEDIR /home/Fei.Liu/noscrub/lanl_cice
                                           if !(-d $EXEDIR) mkdir -p $EXEDIR
 setenv CBLD   $SRCDIR/bld
 setenv OBJDIR $EXEDIR/compile           ; if !(-d $OBJDIR) mkdir -p $OBJDIR
