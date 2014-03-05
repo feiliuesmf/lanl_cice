@@ -238,6 +238,8 @@
 
       character (len=3) :: nchar
 
+      if (my_task == master_task) &
+           write(nu_diag,*) ' Reading restart file: ', ice_ic
       call init_restart_read(ice_ic)
 
       diag = .true.
