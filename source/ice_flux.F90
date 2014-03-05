@@ -34,7 +34,7 @@
       ! Dynamics component
       !-----------------------------------------------------------------
 
-      real (kind=dbl_kind), dimension (nx_block,ny_block,max_blocks), public :: &
+      real (kind=dbl_kind), dimension (nx_block,ny_block,max_blocks), target, public :: &
 
        ! in from atmos (if .not.calc_strair)  
          strax   , & ! wind stress components (N/m^2)
