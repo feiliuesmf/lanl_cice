@@ -121,7 +121,7 @@ else
 endif
 
 setenv DRVDIR cice
-if ($IO_TYPE == 'netcdf') then
+if ($IO_TYPE == 'netcdf3' || $IO_TYPE == 'netcdf4') then
   setenv IODIR io_netcdf
 else if ($IO_TYPE == 'pio') then
   setenv IODIR io_pio
