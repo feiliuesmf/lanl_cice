@@ -49,7 +49,9 @@
 
 !***********************************************************************
 
- subroutine init_communicate
+ subroutine init_communicate(mpi_comm)
+
+  integer(int_kind), intent(in), optional  :: mpi_comm
 
 !  This routine sets up MPI environment and defines ice
 !  communicator.
@@ -76,7 +78,11 @@
 #if (defined key_oasis3 || defined key_oasis3mct || defined key_oasis4)
     ice_comm = localComm       ! communicator from NEMO/OASISn 
 #else
-    ice_comm = MPI_COMM_WORLD  ! Global communicator 
+    if(present(mpi_comm)) then
+      ice_comm = mpi_comm
+    else 
+      ice_comm = MPI_COMM_WORLD  ! Global communicator 
+    endif
 #endif 
 
 #if (defined CCSM) || (defined SEQ_MCT)
@@ -84,19 +90,22 @@
    call cpl_interface_init(cpl_fields_icename, MPI_COMM_ICE)
 #else
 
-#if (defined popcice || defined CICE_IN_NEMO)
+#if (defined popcice || defined CICE_IN_NEMO || defined CICE_NEMS)
    ! MPI_INIT is called elsewhere in coupled configuration
+   if(.not. present(mpi_comm)) call MPI_INIT(ierr)
 #else
    call MPI_INIT(ierr)
 #endif
 
    call MPI_BARRIER (ice_comm, ierr)
    call MPI_COMM_DUP(ice_comm, MPI_COMM_ICE, ierr)
+   if(ierr /= 0)  write(*, *) 'Failure to dup mpi_comm'
 
 #endif
 
    master_task = 0
    call MPI_COMM_RANK  (MPI_COMM_ICE, my_task, ierr)
+   if(ierr /= 0)  write(*, *) 'Failure to query rank'
 
    mpiR16 = MPI_REAL16
    mpiR8  = MPI_REAL8

@@ -1,16 +1,16 @@
 &setup_nml
     days_per_year  = 365
   , use_leap_years = .false.
-  , year_init      = 1997
-  , istep0         = 0
+  , year_init      = 2009
+  , istep0         = 8016
   , dt             = 3600.0
-  , npt            = 744
+  , npt            = 96
   , ndtd           = 1
   , runtype        = 'initial'
   , ice_ic         = './restart/iced_gx3_v5.nc'
   , restart        = .true.
   , restart_ext    = .false.
-  , use_restart_time = .true.
+  , use_restart_time = .false.
   , restart_format = 'nc'
   , lcdf64         = .false.
   , restart_dir    = './restart/'
@@ -149,7 +149,7 @@
 &forcing_nml
     formdrag        = .false.
   , atmbndy         = 'default'
-  , fyear_init      = 1997
+  , fyear_init      = 2009
   , ycycle          = 1
   , atm_data_format = 'bin'
   , atm_data_type   = 'ncar'

@@ -46,18 +46,22 @@
           timer_couple, timer_step
       use ice_zbgc_shared, only: skl_bgc
 
+      integer :: stepno = 1
+
    !--------------------------------------------------------------------
    !  initialize error code and step timer
    !--------------------------------------------------------------------
 
-      call ice_timer_start(timer_step)   ! start timing entire run
+!      call ice_timer_start(timer_step)   ! start timing entire run
 
    !--------------------------------------------------------------------
    ! timestep loop
    !--------------------------------------------------------------------
 
-      timeLoop: do
+!      timeLoop: do
 
+         write (*, *) 'calling ice_step, ', stepno, time, dt
+         stepno = stepno + 1
          call ice_step
 
          istep  = istep  + 1    ! update time step counters
@@ -66,7 +70,7 @@
 
          call calendar(time)    ! at the end of the timestep
 
-         if (stop_now >= 1) exit timeLoop
+!         if (stop_now >= 1) exit timeLoop
 
 #ifndef coupled
          call ice_timer_start(timer_couple)  ! atm/ocn coupling
@@ -81,13 +85,13 @@
          call init_flux_atm     ! initialize atmosphere fluxes sent to coupler
          call init_flux_ocn     ! initialize ocean fluxes sent to coupler
 
-      enddo timeLoop
+!      enddo timeLoop
 
    !--------------------------------------------------------------------
    ! end of timestep loop
    !--------------------------------------------------------------------
 
-      call ice_timer_stop(timer_step)   ! end timestepping loop timer     
+!      call ice_timer_stop(timer_step)   ! end timestepping loop timer     
 
       end subroutine CICE_Run
 

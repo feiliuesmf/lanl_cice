@@ -35,8 +35,8 @@ if ($RES == 'col') then   # for column configuration:
    setenv NICECAT    5       # number of ice thickness categories
 else                      # test problem: gx3
    setenv NTASK      4       # total number of processors
-   setenv BLCKX     25       # x-dimension of blocks ( not including )
-   setenv BLCKY     29       # y-dimension of blocks (  ghost cells  )
+   setenv BLCKX     50       # x-dimension of blocks ( not including )
+   setenv BLCKY     58       # y-dimension of blocks (  ghost cells  )
    setenv NICELYR    7       # number of vertical layers in the ice
    setenv NSNWLYR    1       # number of vertical layers in the snow
    setenv NICECAT    5       # number of ice thickness categories

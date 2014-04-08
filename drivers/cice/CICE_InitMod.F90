@@ -35,13 +35,15 @@
 !        replaced by a different driver that calls subroutine cice_init,
 !        where most of the work is done.
 
-      subroutine CICE_Initialize
+      subroutine CICE_Initialize(mpi_comm)
+
+      integer(int_kind), intent(in), optional  :: mpi_comm
 
    !--------------------------------------------------------------------
    ! model initialization
    !--------------------------------------------------------------------
 
-      call cice_init
+      call cice_init(mpi_comm)
 
       end subroutine CICE_Initialize
 
@@ -49,7 +51,7 @@
 !
 !  Initialize CICE model.
 
-      subroutine cice_init
+      subroutine cice_init(mpi_comm)
 
       use ice_aerosol, only: faero_default
       use ice_algae, only: get_forcing_bgc
@@ -83,7 +85,9 @@
       use drv_forcing, only: sst_sss
 #endif
 
-      call init_communicate     ! initial setup for message passing
+      integer(int_kind), intent(in), optional  :: mpi_comm
+
+      call init_communicate(mpi_comm)     ! initial setup for message passing
       call init_fileunits       ! unit numbers
       call input_data           ! namelist variables
       if (trim(runid) == 'bering') call check_finished_file

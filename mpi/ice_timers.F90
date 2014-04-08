@@ -324,6 +324,9 @@
 !
 !-----------------------------------------------------------------------
 
+  !write(*, *) 'In ice_timer_start => ', timer_id
+  !call ice_timer_print_all(stats=.true.)
+
    if (all_timers(timer_id)%in_use) then
 
       !***

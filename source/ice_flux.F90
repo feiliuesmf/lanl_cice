@@ -114,7 +114,7 @@
 
        ! in from atmosphere (if calc_Tsfc)
 
-      real (kind=dbl_kind), dimension (nx_block,ny_block,max_blocks), public :: &
+      real (kind=dbl_kind), dimension (nx_block,ny_block,max_blocks), target, public :: &
          zlvl    , & ! atm level height (m)
          uatm    , & ! wind velocity components (m/s)
          vatm    , &
@@ -142,17 +142,17 @@
 
        ! in from atmosphere
 
-      real (kind=dbl_kind), dimension (nx_block,ny_block,max_blocks), public :: &
+      real (kind=dbl_kind), dimension (nx_block,ny_block,max_blocks), target, public :: &
          frain   , & ! rainfall rate (kg/m^2 s)
          fsnow       ! snowfall rate (kg/m^2 s)
 
       real (kind=dbl_kind), &
-         dimension (nx_block,ny_block,max_aero,max_blocks), public :: &
+         dimension (nx_block,ny_block,max_aero,max_blocks), target, public :: &
          faero_atm   ! aerosol deposition rate (kg/m^2 s)
 
        ! in from ocean
 
-      real (kind=dbl_kind), dimension (nx_block,ny_block,max_blocks), public :: &
+      real (kind=dbl_kind), dimension (nx_block,ny_block,max_blocks), target, public :: &
          sss     , & ! sea surface salinity (ppt)
          sst     , & ! sea surface temperature (C)
          frzmlt  , & ! freezing/melting potential (W/m^2)
@@ -166,7 +166,7 @@
        ! out to atmosphere (if calc_Tsfc)
        ! note Tsfc is in ice_state.F
 
-      real (kind=dbl_kind), dimension (nx_block,ny_block,max_blocks), public :: &
+      real (kind=dbl_kind), dimension (nx_block,ny_block,max_blocks), target, public :: &
          fsens   , & ! sensible heat flux (W/m^2)
          flat    , & ! latent heat flux   (W/m^2)
          fswabs  , & ! shortwave flux absorbed in ice and ocean (W/m^2)
@@ -176,7 +176,7 @@
          evap        ! evaporative water flux (kg/m^2/s)
 
        ! albedos aggregated over categories (if calc_Tsfc)
-      real (kind=dbl_kind), dimension(nx_block,ny_block,max_blocks), public :: &
+      real (kind=dbl_kind), dimension(nx_block,ny_block,max_blocks), target, public :: &
          alvdr   , & ! visible, direct   (fraction)
          alidr   , & ! near-ir, direct   (fraction)
          alvdf   , & ! visible, diffuse  (fraction)
@@ -193,13 +193,13 @@
          apeff_ai     ! effective pond area used for radiation calculation
 
       real (kind=dbl_kind), &
-         dimension(nx_block,ny_block,max_blocks,max_nstrm), public :: &
+         dimension(nx_block,ny_block,max_blocks,max_nstrm), target, public :: &
          albcnt       ! counter for zenith angle
 
        ! out to ocean 
        ! (Note CICE_IN_NEMO does not use these for coupling.  
        !  It uses fresh_ai,fsalt_ai,fhocn_ai and fswthru_ai)
-      real (kind=dbl_kind), dimension (nx_block,ny_block,max_blocks), public :: &
+      real (kind=dbl_kind), dimension (nx_block,ny_block,max_blocks), target, public :: &
          fpond   , & ! fresh water flux to ponds (kg/m^2/s)
          fresh   , & ! fresh water flux to ocean (kg/m^2/s)
          fsalt   , & ! salt flux to ocean (kg/m^2/s)
@@ -207,7 +207,7 @@
          fswthru     ! shortwave penetrating to ocean (W/m^2)
 
       real (kind=dbl_kind), &
-        dimension (nx_block,ny_block,max_aero,max_blocks), public :: &
+        dimension (nx_block,ny_block,max_aero,max_blocks), target, public :: &
          faero_ocn   ! aerosol flux to ocean  (kg/m^2/s)
 
        ! internal
@@ -237,7 +237,7 @@
       ! (for running with CAM)
       !-----------------------------------------------------------------
 
-      real (kind=dbl_kind), dimension (nx_block,ny_block,max_blocks), public :: &
+      real (kind=dbl_kind), dimension (nx_block,ny_block,max_blocks), target, public :: &
          strairx_ocn , & ! stress on ocean by air, x-direction
          strairy_ocn , & ! stress on ocean by air, y-direction
          fsens_ocn   , & ! sensible heat flux (W/m^2)
