@@ -87,12 +87,13 @@
 
       subroutine init_fileunits
 
-         nu_diag = ice_stdout  ! default
-
          ice_IOUnitsInUse = .false.
          ice_IOUnitsInUse(ice_stdin)  = .true. ! reserve unit 5
          ice_IOUnitsInUse(ice_stdout) = .true. ! reserve unit 6
          ice_IOUnitsInUse(ice_stderr) = .true.
+
+         call get_fileunit(nu_diag)
+         open(nu_diag,file='cice.stdout')
 
          call get_fileunit(nu_grid)
          call get_fileunit(nu_kmt)

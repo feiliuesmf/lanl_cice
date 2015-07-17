@@ -54,7 +54,9 @@
    !-------------------------------------------------------------------
 
 #ifndef coupled
+#ifndef CICE_NEMS
       call end_run       ! quit MPI
+#endif
 #endif
 
       end subroutine CICE_Finalize

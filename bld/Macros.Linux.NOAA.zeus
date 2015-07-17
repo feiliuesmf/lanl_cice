@@ -10,7 +10,7 @@ CFLAGS     := -c -O2 -fp-model precise   -xHost
 
 FIXEDFLAGS := -132
 FREEFLAGS  := -FR
-FFLAGS     := -O2 -fp-model precise -convert big_endian -assume byterecl -ftz -traceback   -xHost
+FFLAGS     := -O2 -fp-model precise -convert big_endian -assume byterecl -ftz -traceback   -xHost -g
 FFLAGS_NOOPT:= -O0
 
 ifeq ($(COMMDIR), mpi)

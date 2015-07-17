@@ -1,5 +1,7 @@
 #==============================================================================
-# Makefile macros for "titan" Cray at ORNL 
+# Makefile macros for "gaea" Cray at NOAA, located at ORNL 
+#==============================================================================
+# For use with intel compiler
 #==============================================================================
 
 INCLDIR    := -I. 
@@ -14,9 +16,10 @@ ifeq ($(COMMDIR), mpi)
 else
    FC         :=  ftn
 endif
-FIXEDFLAGS := -Mfixed 
-FREEFLAGS  := -Mfree 
-FFLAGS     := -r8 -i4 -O2 -byteswapio -Mnodclchk -Mextend 
+FIXEDFLAGS := -132
+FREEFLAGS  := -FR
+FFLAGS     := -O2 -fp-model precise -convert big_endian -assume byterecl -ftz -traceback   -xHost -g
+FFLAGS_NOOPT:= -O0
 
 ifeq ($(THRD), yes)
    FFLAGS  :=  $(FFLAGS) -openmp
