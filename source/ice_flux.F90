@@ -204,7 +204,11 @@
          fresh   , & ! fresh water flux to ocean (kg/m^2/s)
          fsalt   , & ! salt flux to ocean (kg/m^2/s)
          fhocn   , & ! net heat flux to ocean (W/m^2)
-         fswthru     ! shortwave penetrating to ocean (W/m^2)
+         fswthru , & ! shortwave penetrating to ocean (W/m^2)
+         fswthruvdr, & ! vis dir shortwave penetrating to ocean (W/m^2)
+         fswthruvdf, & ! vis dif shortwave penetrating to ocean (W/m^2)
+         fswthruidr, & ! nir dir shortwave penetrating to ocean (W/m^2)
+         fswthruidf    ! nir dif shortwave penetrating to ocean (W/m^2)
 
       real (kind=dbl_kind), &
         dimension (nx_block,ny_block,max_aero,max_blocks), target, public :: &
@@ -456,6 +460,10 @@
       fsalt   (:,:,:) = c0
       fhocn   (:,:,:) = c0
       fswthru (:,:,:) = c0
+      fswthruvdr (:,:,:) = c0
+      fswthruvdf (:,:,:) = c0
+      fswthruidr (:,:,:) = c0
+      fswthruidf (:,:,:) = c0
       fresh_da(:,:,:) = c0    ! data assimilation
       fsalt_da(:,:,:) = c0
       flux_bio (:,:,:,:) = c0 ! bgc
@@ -522,6 +530,10 @@
       fsalt    (:,:,:)   = c0
       fhocn    (:,:,:)   = c0
       fswthru  (:,:,:)   = c0
+      fswthruvdr  (:,:,:)   = c0
+      fswthruvdf  (:,:,:)   = c0
+      fswthruidr  (:,:,:)   = c0
+      fswthruidf  (:,:,:)   = c0
       faero_ocn(:,:,:,:) = c0
  
       flux_bio (:,:,:,:) = c0  ! bgc
@@ -654,6 +666,7 @@
                                Trefn,    Qrefn,      &
                                freshn,   fsaltn,     &
                                fhocnn,   fswthrun,   &
+                               fswthrunvdr,   fswthrunvdf,   &
                                strairxT, strairyT,   &  
                                Cdn_atm_ocn,    &
                                fsurf,    fcondtop,   &
@@ -663,6 +676,7 @@
                                Tref,     Qref,       &
                                fresh,    fsalt,      & 
                                fhocn,    fswthru,    &
+                               fswthruvdr, fswthruvdf, &
                                melttn, meltsn, meltbn, congeln, snoicen, &
                                meltt,  melts,  &
                                meltb,                       &
@@ -697,6 +711,8 @@
           fsaltn  , & ! salt flux to ocean              (kg/m2/s)
           fhocnn  , & ! actual ocn/ice heat flx         (W/m**2)
           fswthrun, & ! sw radiation through ice bot    (W/m**2)
+          fswthrunvdr, & ! sw radiation through ice bot    (W/m**2)
+          fswthrunvdf, & ! sw radiation through ice bot    (W/m**2)
           melttn  , & ! top ice melt                    (m)
           meltbn  , & ! bottom ice melt                 (m)
           meltsn  , & ! snow melt                       (m)
@@ -722,6 +738,8 @@
           fsalt   , & ! salt flux to ocean              (kg/m2/s)
           fhocn   , & ! actual ocn/ice heat flx         (W/m**2)
           fswthru , & ! sw radiation through ice bot    (W/m**2)
+          fswthruvdr , & ! sw vis dir radiation through ice bot    (W/m**2)
+          fswthruvdf , & ! sw vis dif radiation through ice bot    (W/m**2)
           meltt   , & ! top ice melt                    (m)
           meltb   , & ! bottom ice melt                 (m)
           melts   , & ! snow melt                       (m)
@@ -768,6 +786,8 @@
          fsalt    (i,j) = fsalt    (i,j) + fsaltn  (i,j)*aicen(i,j)
          fhocn    (i,j) = fhocn    (i,j) + fhocnn  (i,j)*aicen(i,j)
          fswthru  (i,j) = fswthru  (i,j) + fswthrun(i,j)*aicen(i,j)
+         fswthruvdr  (i,j) = fswthruvdr  (i,j) + fswthrun(i,j)*aicen(i,j)
+         fswthruvdf  (i,j) = fswthruvdf  (i,j) + fswthrun(i,j)*aicen(i,j)
 
          ! ice/snow thickness
 
@@ -799,6 +819,7 @@
                                Tref,     Qref,     &
                                fresh,    fsalt,    &
                                fhocn,    fswthru,  &
+                               fswthruvdr,    fswthruvdf,  &
                                faero_ocn,          &
                                alvdr,    alidr,    &
                                alvdf,    alidf,    &
@@ -836,6 +857,8 @@
           fsalt   , & ! salt flux to ocean              (kg/m2/s)
           fhocn   , & ! actual ocn/ice heat flx         (W/m**2)
           fswthru , & ! sw radiation through ice bot    (W/m**2)
+          fswthruvdr , & ! sw radiation through ice bot    (W/m**2)
+          fswthruvdf , & ! sw radiation through ice bot    (W/m**2)
           alvdr   , & ! visible, direct   (fraction)
           alidr   , & ! near-ir, direct   (fraction)
           alvdf   , & ! visible, diffuse  (fraction)
@@ -882,6 +905,8 @@
             fsalt   (i,j) = fsalt   (i,j) * ar
             fhocn   (i,j) = fhocn   (i,j) * ar
             fswthru (i,j) = fswthru (i,j) * ar
+            fswthruvdr (i,j) = fswthruvdr (i,j) * ar
+            fswthruvdf (i,j) = fswthruvdf (i,j) * ar
             alvdr   (i,j) = alvdr   (i,j) * ar
             alidr   (i,j) = alidr   (i,j) * ar
             alvdf   (i,j) = alvdf   (i,j) * ar
@@ -903,6 +928,8 @@
             fsalt   (i,j) = c0
             fhocn   (i,j) = c0
             fswthru (i,j) = c0
+            fswthruvdr (i,j) = c0
+            fswthruvdf (i,j) = c0
             alvdr   (i,j) = c0  ! zero out albedo where ice is absent
             alidr   (i,j) = c0
             alvdf   (i,j) = c0 
