@@ -2045,7 +2045,9 @@
       real (kind=dbl_kind), dimension(icells_DE) :: & 
          fsfc    , & ! shortwave absorbed at snow/bare ice/ponded ice surface (W m-2)
          fint    , & ! shortwave absorbed in interior (W m-2)
-         fthru       ! shortwave through snow/bare ice/ponded ice to ocean (W/m^2)
+         fthru   , & ! shortwave through snow/bare ice/ponded ice to ocean (W/m^2)
+         fthruvdr, & ! shortwave through snow/bare ice/ponded ice to ocean (W/m^2)
+         fthruvdf    ! shortwave through snow/bare ice/ponded ice to ocean (W/m^2)
 
       real (kind=dbl_kind), dimension(icells_DE,nslyr) :: & 
          Sabs        ! shortwave absorbed in snow layer (W m-2)
@@ -2881,6 +2883,8 @@
             fsfc(ij)  = fsfc(ij)  + tmp_0  - tmp_ks
             fint(ij)  = fint(ij)  + tmp_ks - tmp_kl
             fthru(ij) = fthru(ij) + tmp_kl
+            fthruvdr(ij) = fthruvdr(ij) + dfdir(klevp,ij)*swdr
+            fthruvdf(ij) = fthruvdf(ij) + dfdif(klevp,ij)*swdf
 
             ! if snow covered ice, set snow internal absorption; else, Sabs=0
             if( srftyp == 1 ) then
@@ -2948,6 +2952,8 @@
             fsfc(ij)  = fsfc(ij)  + tmp_0  - tmp_ks
             fint(ij)  = fint(ij)  + tmp_ks - tmp_kl
             fthru(ij) = fthru(ij) + tmp_kl
+            fthruvdr(ij) = fthruvdr(ij) + dfdir(klevp,ij)*swdr
+            fthruvdf(ij) = fthruvdf(ij) + dfdif(klevp,ij)*swdf
 
             ! if snow covered ice, set snow internal absorption; else, Sabs=0
             if( srftyp == 1 ) then
@@ -3005,8 +3011,8 @@
          fswsfc(i,j)  = fswsfc(i,j)  + fsfc(ij) *fi(i,j)
          fswint(i,j)  = fswint(i,j)  + fint(ij) *fi(i,j)
          fswthru(i,j) = fswthru(i,j) + fthru(ij)*fi(i,j)
-         fswthruvdr(i,j) = fswthruvdr(i,j) + fthru(ij)*fi(i,j)
-         fswthruvdf(i,j) = fswthruvdf(i,j) + fthru(ij)*fi(i,j)
+         fswthruvdr(i,j) = fswthruvdr(i,j) + fthruvdr(ij)*fi(i,j)
+         fswthruvdf(i,j) = fswthruvdf(i,j) + fthruvdf(ij)*fi(i,j)
       enddo                     ! ij
 
 

@@ -786,8 +786,8 @@
          fsalt    (i,j) = fsalt    (i,j) + fsaltn  (i,j)*aicen(i,j)
          fhocn    (i,j) = fhocn    (i,j) + fhocnn  (i,j)*aicen(i,j)
          fswthru  (i,j) = fswthru  (i,j) + fswthrun(i,j)*aicen(i,j)
-         fswthruvdr  (i,j) = fswthruvdr  (i,j) + fswthrun(i,j)*aicen(i,j)
-         fswthruvdf  (i,j) = fswthruvdf  (i,j) + fswthrun(i,j)*aicen(i,j)
+         fswthruvdr  (i,j) = fswthruvdr  (i,j) + fswthrunvdr(i,j)*aicen(i,j)
+         fswthruvdf  (i,j) = fswthruvdf  (i,j) + fswthrunvdf(i,j)*aicen(i,j)
 
          ! ice/snow thickness
 
