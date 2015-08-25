@@ -9,7 +9,7 @@ SLIBS      :=
 ULIBS      := 
 CPP        := /usr/bin/cpp
 CPPFLAGS   := -P -traditional
-CPPDEFS    := -DLINUX
+CPPDEFS    := -DLINUX -DCICE_NEMS
 CFLAGS     := -c -O2
 ifeq ($(COMMDIR), mpi)
    FC         :=  ftn 
