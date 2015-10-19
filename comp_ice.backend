@@ -69,8 +69,8 @@ if ($RES == 'nx1') then   # for column configuration:
    setenv NICECAT    5       # number of ice thickness categories
 endif
 if ($RES == 'mx5') then   # for column configuration:
-   setenv NTASK     16       # total number of processors
-   setenv BLCKX     90       # x-dimension of blocks ( not including )
+   setenv NTASK     40       # total number of processors
+   setenv BLCKX     36       # x-dimension of blocks ( not including )
    setenv BLCKY    205       # y-dimension of blocks (  ghost cells  )
    setenv NICELYR    7       # number of vertical layers in the ice
    setenv NSNWLYR    1       # number of vertical layers in the snow
