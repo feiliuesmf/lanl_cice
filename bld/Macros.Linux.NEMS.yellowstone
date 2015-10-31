@@ -44,7 +44,7 @@ SCC:= icc
 
 SFC:= ifort 
 
-#   CPPDEFS :=  $(CPPDEFS)  -Dfcd_coupled -Dcoupled
+    CPPDEFS :=  $(CPPDEFS) -Dcoupled
 
     CPPDEFS :=  $(CPPDEFS) -DNXGLOB=$(NXGLOB) -DNYGLOB=$(NYGLOB) \
                 -DBLCKX=$(BLCKX) -DBLCKY=$(BLCKY) -DMXBLCKS=$(MXBLCKS) \

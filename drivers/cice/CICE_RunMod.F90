@@ -60,8 +60,12 @@
 
 !      timeLoop: do
 
+         call init_flux_atm     ! initialize atmosphere fluxes sent to coupler
+         call init_flux_ocn     ! initialize ocean fluxes sent to coupler
+
          write (*, *) 'calling ice_step, ', stepno, time, dt
          stepno = stepno + 1
+
          call ice_step
 
          istep  = istep  + 1    ! update time step counters
@@ -81,9 +85,6 @@
          if (skl_bgc)  call get_forcing_bgc   ! biogeochemistry
          call ice_timer_stop(timer_couple)    ! atm/ocn coupling
 #endif
-
-         call init_flux_atm     ! initialize atmosphere fluxes sent to coupler
-         call init_flux_ocn     ! initialize ocean fluxes sent to coupler
 
 !      enddo timeLoop
 
