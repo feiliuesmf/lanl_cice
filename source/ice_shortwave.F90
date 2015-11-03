@@ -100,6 +100,8 @@
          fswthrun    , & ! SW through ice to ocean            (W/m^2)
          fswthrunvdr    , & ! SW through ice to ocean            (W/m^2)
          fswthrunvdf    , & ! SW through ice to ocean            (W/m^2)
+         fswthrunidr    , & ! SW through ice to ocean            (W/m^2)
+         fswthrunidf    , & ! SW through ice to ocean            (W/m^2)
          fswintn         ! SW absorbed in ice interior, below surface (W m-2)
 
       real (kind=dbl_kind), dimension (nx_block,ny_block,nilyr+1,ncat,max_blocks), &
@@ -210,6 +212,7 @@
                           fswsfcn(:,:,:,iblk),   fswintn(:,:,:,iblk),     &
                           fswthrun(:,:,:,iblk),                           &
                           fswthrunvdr(:,:,:,iblk),  fswthrunvdf(:,:,:,iblk),  &
+                          fswthrunidr(:,:,:,iblk),  fswthrunidf(:,:,:,iblk),  &
                           fswpenln(:,:,:,:,iblk),  &
                           Sswabsn(:,:,:,:,iblk), Iswabsn(:,:,:,:,iblk),   &
                           albicen(:,:,:,iblk),   albsnon(:,:,:,iblk),     &
@@ -1081,7 +1084,10 @@
                           alvdrn,   alvdfn,    &
                           alidrn,   alidfn,    &
                           fswsfcn,  fswintn,   &
-                          fswthrun, fswthrunvdr, fswthrunvdf, fswpenln,  &
+                          fswthrun,            &
+                          fswthrunvdr, fswthrunvdf, &
+                          fswthrunidr, fswthrunidf, &
+                          fswpenln,  &
                           Sswabsn,  Iswabsn,   &
                           albicen,  albsnon,   &
                           albpndn,  apeffn,    &
@@ -1136,6 +1142,8 @@
            fswthrun, & ! SW through ice to ocean (W/m^2) 
            fswthrunvdr, & ! SW through ice to ocean (W/m^2) 
            fswthrunvdf, & ! SW through ice to ocean (W/m^2) 
+           fswthrunidr, & ! SW through ice to ocean (W/m^2) 
+           fswthrunidf, & ! SW through ice to ocean (W/m^2) 
            albicen,  & ! albedo bare ice 
            albsnon,  & ! albedo snow 
            albpndn,  & ! albedo pond 
@@ -1367,6 +1375,8 @@
                              fswthrun(:,:,n),                   &
                              fswthrunvdr(:,:,n),                &
                              fswthrunvdf(:,:,n),                &
+                             fswthrunidr(:,:,n),                &
+                             fswthrunidf(:,:,n),                &
                              Sswabsn(:,:,:,n),                  &
                              Iswabsn(:,:,:,n),                  &
                              albicen(:,:,n),                    &
@@ -1419,7 +1429,10 @@
                                   alvdr,    alvdf,       &
                                   alidr,    alidf,       &
                                   fswsfc,   fswint,      &
-                                  fswthru,  fswthruvdr, fswthruvdf, Sswabs,      &
+                                  fswthru,               &
+                                  fswthruvdr, fswthruvdf,&
+                                  fswthruidr, fswthruidf,&
+                                  Sswabs,                &
                                   Iswabs,   albice,      &
                                   albsno,   albpnd,      &
                                   fswpenl)
@@ -1473,7 +1486,9 @@
          fswint  , & ! SW interior absorption (below surface, above ocean,W m-2)
          fswthru , & ! SW through snow/bare ice/ponded ice into ocean (W m-2)
          fswthruvdr , & ! SW through snow/bare ice/ponded ice into ocean (W m-2)
-         fswthruvdf     ! SW through snow/bare ice/ponded ice into ocean (W m-2)
+         fswthruvdf , & ! SW through snow/bare ice/ponded ice into ocean (W m-2)
+         fswthruidr , & ! SW through snow/bare ice/ponded ice into ocean (W m-2)
+         fswthruidf     ! SW through snow/bare ice/ponded ice into ocean (W m-2)
  
       real (kind=dbl_kind), dimension (nx_block,ny_block,nilyr+1), &
          intent(out) :: &
@@ -1563,6 +1578,8 @@
          fswthru(i,j)  = c0
          fswthruvdr(i,j)  = c0
          fswthruvdf(i,j)  = c0
+         fswthruidr(i,j)  = c0
+         fswthruidf(i,j)  = c0
       ! compute fraction of nir down direct to total over all points:
          fnidr(i,j) = c0
          if( swidr(i,j) + swidf(i,j) > puny ) then
@@ -1638,8 +1655,10 @@
              fi,        aero_mp,  avdrl,    avdfl,         &
                                   aidrl,    aidfl,         &
                                   fswsfc,   fswint,        &
-                                  fswthru,  fswthruvdr, fswthruvdf, Sswabs, &
-                                  Iswabs,   fswpenl)
+                                  fswthru,                 &
+                                  fswthruvdr, fswthruvdf,  &
+                                  fswthruidr, fswthruidf,  &
+                                  Sswabs, Iswabs,   fswpenl)
 
 !DIR$ CONCURRENT !Cray
 !cdir nodep      !NEC
@@ -1688,8 +1707,10 @@
              fs,        aero_mp,  avdrl,    avdfl,         &
                                   aidrl,    aidfl,         &
                                   fswsfc,   fswint,        &
-                                  fswthru,  fswthruvdr, fswthruvdf, Sswabs, &
-                                  Iswabs,   fswpenl)
+                                  fswthru,                 &
+                                  fswthruvdr, fswthruvdf,  &
+                                  fswthruidr, fswthruidf,  &
+                                  Sswabs, Iswabs,   fswpenl)
 
 !DIR$ CONCURRENT !Cray
 !cdir nodep      !NEC
@@ -1740,8 +1761,10 @@
              fp,        aero_mp,  avdrl,    avdfl,         &
                                   aidrl,    aidfl,         &
                                   fswsfc,   fswint,        &
-                                  fswthru,  fswthruvdr, fswthruvdf, Sswabs, &
-                                  Iswabs,   fswpenl)
+                                  fswthru,                 &
+                                  fswthruvdr, fswthruvdf,  &
+                                  fswthruidr, fswthruidf,  &
+                                  Sswabs, Iswabs,   fswpenl)
 
 !DIR$ CONCURRENT !Cray
 !cdir nodep      !NEC
@@ -1793,9 +1816,12 @@
                                   alvdr(i,j),alvdf(i,j)
                write(nu_diag,*) ' alidr  alidf = ', &
                                   alidr(i,j),alidf(i,j)
-               write(nu_diag,*) ' fswsfc fswint fswthru fswthruvdr fswthruvdf = ', &
-                                  fswsfc(i,j),fswint(i,j),fswthru(i,j), &
-                                  fswthruvdr, fswthruvdf
+               write(nu_diag,*) ' fswsfc fswint fswthru  = ', &
+                                  fswsfc(i,j),fswint(i,j),fswthru(i,j)
+               write(nu_diag,*) ' fswthruvdr fswthruvdf fswthruidr fswthruidf = ', &
+                                  fswthruvdr(i,j),fswthruvdf(i,j), &
+                                  fswthruidr(i,j),fswthruidf(i,j)
+
                swdn  = swvdr(i,j)+swvdf(i,j)+swidr(i,j)+swidf(i,j)
                swab  = fswsfc(i,j)+fswint(i,j)+fswthru(i,j)
                swalb = (1.-swab/(swdn+.0001))
@@ -1838,8 +1864,10 @@
              fi,        aero_mp,  alvdr,    alvdf,         &
                                   alidr,    alidf,         &
                                   fswsfc,   fswint,        &
-                                  fswthru,  fswthruvdr, fswthruvdf, Sswabs, &
-                                  Iswabs,   fswpenl)
+                                  fswthru,                 &
+                                  fswthruvdr, fswthruvdf,  &
+                                  fswthruidr, fswthruidf,  &
+                                  Sswabs, Iswabs, fswpenl)
 
       use ice_therm_shared, only: heat_capacity
       use ice_state, only: tr_aero
@@ -1895,7 +1923,9 @@
          fswint  , & ! SW interior absorption (below surface, above ocean,W m-2)
          fswthru , & ! SW through snow/bare ice/ponded ice into ocean (W m-2)
          fswthruvdr , & ! SW through snow/bare ice/ponded ice into ocean (W m-2)
-         fswthruvdf     ! SW through snow/bare ice/ponded ice into ocean (W m-2)
+         fswthruvdf , & ! SW through snow/bare ice/ponded ice into ocean (W m-2)
+         fswthruidr , & ! SW through snow/bare ice/ponded ice into ocean (W m-2)
+         fswthruidf     ! SW through snow/bare ice/ponded ice into ocean (W m-2)
  
       real (kind=dbl_kind), dimension (nx_block,ny_block,nilyr+1), &
          intent(inout) :: &
@@ -2047,7 +2077,9 @@
          fint    , & ! shortwave absorbed in interior (W m-2)
          fthru   , & ! shortwave through snow/bare ice/ponded ice to ocean (W/m^2)
          fthruvdr, & ! shortwave through snow/bare ice/ponded ice to ocean (W/m^2)
-         fthruvdf    ! shortwave through snow/bare ice/ponded ice to ocean (W/m^2)
+         fthruvdf, & ! shortwave through snow/bare ice/ponded ice to ocean (W/m^2)
+         fthruidr, & ! shortwave through snow/bare ice/ponded ice to ocean (W/m^2)
+         fthruidf    ! shortwave through snow/bare ice/ponded ice to ocean (W/m^2)
 
       real (kind=dbl_kind), dimension(icells_DE,nslyr) :: & 
          Sabs        ! shortwave absorbed in snow layer (W m-2)
@@ -2398,6 +2430,10 @@
          fsfc(ij)   = c0
          fint(ij)   = c0
          fthru(ij)  = c0
+         fthruvdr(ij)  = c0
+         fthruvdf(ij)  = c0
+         fthruidr(ij)  = c0
+         fthruidf(ij)  = c0
  
       ! spectral weights
       ! weights 2 (0.7-1.19 micro-meters) and 3 (1.19-5.0 micro-meters) 
@@ -2952,8 +2988,8 @@
             fsfc(ij)  = fsfc(ij)  + tmp_0  - tmp_ks
             fint(ij)  = fint(ij)  + tmp_ks - tmp_kl
             fthru(ij) = fthru(ij) + tmp_kl
-            fthruvdr(ij) = fthruvdr(ij) + dfdir(klevp,ij)*swdr
-            fthruvdf(ij) = fthruvdf(ij) + dfdif(klevp,ij)*swdf
+            fthruidr(ij) = fthruidr(ij) + dfdir(klevp,ij)*swdr*wghtns(ij,ns)
+            fthruidf(ij) = fthruidf(ij) + dfdif(klevp,ij)*swdf*wghtns(ij,ns)
 
             ! if snow covered ice, set snow internal absorption; else, Sabs=0
             if( srftyp == 1 ) then
@@ -3013,6 +3049,8 @@
          fswthru(i,j) = fswthru(i,j) + fthru(ij)*fi(i,j)
          fswthruvdr(i,j) = fswthruvdr(i,j) + fthruvdr(ij)*fi(i,j)
          fswthruvdf(i,j) = fswthruvdf(i,j) + fthruvdf(ij)*fi(i,j)
+         fswthruidr(i,j) = fswthruidr(i,j) + fthruidr(ij)*fi(i,j)
+         fswthruidf(i,j) = fswthruidf(i,j) + fthruidf(ij)*fi(i,j)
       enddo                     ! ij
 
 
