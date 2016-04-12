@@ -283,6 +283,9 @@
         case ("d", "D")
           if (new_day   .and. mod(elapsed_days, dumpfreq_n)==0) &
                 write_restart = 1
+        case ("s", "S")
+          if (new_day   .and. mod(int(ttime), dumpfreq_n)==0) &
+                write_restart = 1
         end select
       
       endif !  istep > 1
