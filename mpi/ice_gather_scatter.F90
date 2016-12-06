@@ -227,8 +227,6 @@
 
    endif
 
-   CALL MPI_BARRIER(MPI_COMM_ICE, ierr)
-
 !-----------------------------------------------------------------------
 
  end subroutine gather_global_dbl
